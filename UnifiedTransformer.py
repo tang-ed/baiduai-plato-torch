@@ -272,10 +272,10 @@ class Embeddings(nn.Module):
 
         return embeddings
 
-class LMHead(nn.Module):
+class UnifiedTransformerLMHead(nn.Module):
 
-    def __init__(self, config, embedding=None):
-        super(LMHead, self).__init__()
+    def __init__(self, config:UnifiedTransformerConfig, embedding=None):
+        super(UnifiedTransformerLMHead, self).__init__()
         self.transform = nn.Linear(config.hidden_size, config.hidden_size)
         self.activation_fn = nn.GELU() if config.activation_function == "gelu" else nn.ReLU()
         self.layer_norm = nn.LayerNorm(config.hidden_size)
@@ -300,11 +300,8 @@ class UnifiedTransformerModel(PretrainedModel):
         super().__init__()
 
         self.decoder = UnifiedTransformerDecoder(config)
-        self.lm_head = LMHead(config, self.decoder.embedding.word_embedding)
+        self.lm_head = UnifiedTransformerLMHead(config, self.decoder.embedding.word_embedding)
         self.apply(self.init_weights)
-
-    def get_encoder(self):
-        return self.encoder
 
     def forward(
         self,
