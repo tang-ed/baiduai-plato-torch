@@ -25,19 +25,20 @@ def expand_attention_mask(attention_mask, tgt_len=None):
     mask = 1.0 - mask
 
     mask = mask.expand(1, 1, tgt_len, seq_len)
+    mask = mask * -10000000.0
+    return mask
 
-    return mask.masked_fill(mask.bool(), -10000000.0)
-
-def make_attention_causal(shape, causal_index, dtype=torch.float32, att_mask=None):
+def make_attention_causal(shape, causal_index, att_mask=None):
     baz, seq_len = shape
 
     causal = None
     if seq_len > 1:
-        causal = torch.full((seq_len, seq_len), fill_value=-10000000.0, device=device, dtype=dtype)
 
-        causal.masked_fill_(causal_index < (causal_index + 1).view(-1, 1), 0)
+        causal = causal_index < (causal_index + 1).reshape((-1, 1))
+        causal = 1 - causal.int()
+        causal = causal * -10000000.0
 
-        causal = causal[None, None, :, :].expand(1, 1, seq_len, seq_len)
+        causal = causal[None, None, :, :]
 
         if att_mask is not None:
             att_mask = expand_attention_mask(att_mask)
