@@ -1,6 +1,5 @@
 import math
 import torch
-import torch.utils.checkpoint
 from torch import nn
 from typing import Dict
 import json
