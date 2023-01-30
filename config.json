@@ -1,0 +1,20 @@
+{
+  "activation_dropout": 0.0,
+  "attention_dropout": 0.0,
+  "hidden_size": 768,
+  "conv_bias": false,
+  "decoder_attention_heads": 12,
+  "decoder_filter_size": 3072,
+  "decoder_layers": 8,
+  "dropout": 0.1,
+  "encoder_attention_heads": 12,
+  "encoder_filter_size": 3072,
+  "encoder_layers": 2,
+  "init_std": 0.02,
+  "max_position_embeddings": 512,
+  "type_token_embeddings": 2,
+  "pad_token_id": 0,
+  "scale_embedding": true,
+  "attention_bias": true,
+  "vocab_size": 4535
+}
